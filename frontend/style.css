@@ -1,0 +1,402 @@
+/* frontend/style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 15px;
+    gap: 15px;
+}
+
+.header {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+    color: #1890ff;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.header-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.label {
+    color: #666;
+    font-size: 14px;
+}
+
+.value {
+    font-weight: bold;
+    color: #333;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    gap: 15px;
+    min-height: 0;
+}
+
+.control-panel {
+    width: 280px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.control-panel h3 {
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 8px 12px;
+    background: #1890ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #40a9ff;
+}
+
+button.btn-success {
+    background: #52c41a;
+}
+
+button.btn-success:hover {
+    background: #73d13d;
+}
+
+button.btn-info {
+    background: #13c2c2;
+}
+
+button.btn-info:hover {
+    background: #36cfc9;
+}
+
+.filter-group {
+    margin: 15px 0;
+}
+
+.filter-item {
+    margin-bottom: 10px;
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 14px;
+}
+
+.filter-item select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
+.station-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.station-item {
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.station-item:hover {
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+}
+
+.station-item.active {
+    background: #e6f7ff;
+    border-color: #1890ff;
+}
+
+.station-name {
+    font-weight: bold;
+    color: #1890ff;
+    margin-bottom: 4px;
+}
+
+.station-info {
+    font-size: 12px;
+    color: #666;
+}
+
+.map-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 0;
+}
+
+.map {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: #fafafa;
+}
+
+.station-detail {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.detail-header h3 {
+    color: #333;
+}
+
+.detail-content {
+    font-size: 14px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row .label {
+    color: #666;
+}
+
+.info-row .value {
+    font-weight: 500;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #e8e8e8;
+    padding: 8px;
+    text-align: left;
+}
+
+.data-table th {
+    background: #fafafa;
+    font-weight: 600;
+}
+
+.data-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+
+/* 添加这些样式 */
+/* .no-data {
+    text-align: center;
+    padding: 30px;
+    color: #999;
+}
+
+.no-data p {
+    margin-bottom: 15px;
+}
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #ff4d4f;
+}
+
+.error button {
+    margin-top: 10px;
+    background: #ff4d4f;
+}
+
+.error button:hover {
+    background: #ff7875;
+}
+
+/* 站点信息改进 */
+/* .station-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.station-info span {
+    white-space: nowrap;
+} */ 
+
+/* 筛选器样式改进 */
+/* .filter-item {
+    position: relative;
+}
+
+.filter-item::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    top: 28px;
+    color: #999;
+    pointer-events: none;
+} */
+
+/* 响应式改进 */
+/* @media (max-width: 768px) {
+    .station-info {
+        flex-direction: column;
+        gap: 2px;
+    }
+} */

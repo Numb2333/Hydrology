@@ -1,0 +1,189 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水利监测系统</title>
+    <!-- OpenLayers CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
+    <!-- 自定义CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>水利监测系统</h1>
+            <div class="header-info">
+                <div class="info-item">
+                    <span class="label">系统状态:</span>
+                    <span class="value" id="systemStatus">运行中</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">站点数量:</span>
+                    <span class="value" id="stationCount">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">最后更新:</span>
+                    <span class="value" id="lastUpdate">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容 -->
+        <div class="main-content">
+            <!-- 左侧控制面板 -->
+            <div class="control-panel">
+                <h3>控制面板</h3>
+                <div class="button-group">
+                    <button onclick="loadStations()" id="refreshBtn">刷新站点</button>
+                    <button onclick="showAddStationForm()" id="addStationBtn" class="btn-success">添加站点</button>
+                </div>
+                
+                <h3>站点筛选</h3>
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label>区域:</label>
+                        <select id="regionFilter" onchange="filterStations()">
+                            <option value="">全部区域</option>
+                            <option value="华北">华北</option>
+                            <option value="华东">华东</option>
+                            <option value="华南">华南</option>
+                            <option value="西南">西南</option>
+                            <option value="华中">华中</option>
+                            <option value="西北">西北</option>
+                            <option value="东北">东北</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                
+                <h3>站点列表</h3>
+                <div id="stationList" class="station-list">
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+
+            <!-- 右侧地图和数据 -->
+            <div class="map-container">
+                <!-- 地图 -->
+                <div id="map" class="map">
+                    <!-- <div class="loading">地图加载中...</div> -->
+                </div>
+                
+                <!-- 站点详情 -->
+                <div id="stationDetail" class="station-detail" style="display: none;">
+                    <div class="detail-header">
+                        <h3>站点详情</h3>
+                        <button onclick="closeDetail()" class="close-btn">×</button>
+                    </div>
+                    <div class="detail-content">
+                        <div class="station-info">
+                            <div class="info-row">
+                                <span class="label">站点名称:</span>
+                                <span class="value" id="detailName">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">站点ID:</span>
+                                <span class="value" id="detailId">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">位置:</span>
+                                <span class="value" id="detailLocation">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">海拔:</span>
+                                <span class="value" id="detailElevation">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">区域:</span>
+                                <span class="value" id="detailRegion">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">状态:</span>
+                                <span class="value" id="detailStatus">--</span>
+                            </div>
+                        </div>
+
+                        <h4 style="margin: 15px 0 10px 0;">监测数据</h4>
+                        <div id="dataTableContainer">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>降雨量(mm)</th>
+                                        <th>温度(℃)</th>
+                                        <th>湿度(%)</th>
+                                        <th>风速(m/s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dataTableBody">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;">选择站点查看数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加站点模态框 -->
+    <div id="addStationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加新站点</h3>
+                <button onclick="closeModal()" class="close-btn">×</button>
+            </div>
+            <form id="addStationForm" onsubmit="addStation(event)">
+                <div class="form-group">
+                    <label for="stationId">站点ID *</label>
+                    <input type="text" id="stationId" name="stationId" required>
+                </div>
+                <div class="form-group">
+                    <label for="stationName">站点名称 *</label>
+                    <input type="text" id="stationName" name="stationName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="latitude">纬度 *</label>
+                        <input type="number" id="latitude" name="latitude" step="0.000001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">经度 *</label>
+                        <input type="number" id="longitude" name="longitude" step="0.000001" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="region">区域</label>
+                    <select id="region" name="region">
+                        <option value="">选择区域</option>
+                        <option value="华北">华北</option>
+                        <option value="华东">华东</option>
+                        <option value="华南">华南</option>
+                        <option value="西南">西南</option>
+                        <option value="华中">华中</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="elevation">海拔(米)</label>
+                    <input type="number" id="elevation" name="elevation" step="0.1">
+                </div>
+                <div class="form-actions">
+                    <button type="submit">添加</button>
+                    <button type="button" onclick="closeModal()">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 脚本 -->
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+    <!-- 自定义JS -->
+    <script src="app.js"></script>
+</body>
+</html>
